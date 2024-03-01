@@ -7,7 +7,7 @@ import docker
 import typing
 from dataclasses import dataclass
 from graphviz import Graph
-from graphviz.backend import FORMATS
+from graphviz import FORMATS
 
 # colorlover.scales["12"]["qual"]["Paired"] converted to hex strings
 COLORS = ["#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#b15928", "#a6cee3", "#b2df8a", "#fdbf6f",
@@ -64,7 +64,7 @@ def get_networks(client: docker.DockerClient, verbose: bool) -> typing.Dict[str,
     for net in sorted(client.networks.list(), key=lambda k: k.name):
         try:
             gateway = net.attrs["IPAM"]["Config"][0]["Subnet"]
-        except (KeyError, IndexError):
+        except (KeyError, IndexError, TypeError):
             # This network doesn't seem to be used, skip it
             continue
 
